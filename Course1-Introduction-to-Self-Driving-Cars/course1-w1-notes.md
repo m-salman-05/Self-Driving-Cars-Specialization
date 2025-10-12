@@ -286,13 +286,13 @@ This module introduces the language and structure of the problem definition, def
     - Includes automated objects and event detection and response
     - In case of failure the control must be taken by the driver
     - the driver does not need to pay attention in specific situation as the vehicule shall alert the driver in time to intervene
-     - *[OWN] In general, the driver does need to pay attention.*
+      - *[OWN] In general, the driver does need to pay attention.*
     - sometimes the sytems doesnot know when it is experiencing a failure
     - ex1 : Audi A8 Luxuary Sedan
   
   - **Level 4 - high Driving Automation** : L3 + Fallback - handles emergencies autonomously, driver can entirely focus on other tasks.
     - may ask to take over to avoid pulling over to the side of the road unnecessarily
-     - *[OWN] But the car handle emergencies without the user's input.*
+      - *[OWN] But the car handle emergencies without the user's input.*
     - the driver can watch a movie, check his phone
     - still permits self-driving systems with a limited ODD
     - ex1 : Only [Waymo](https://waymo.com/) has depoyed vehicles for public transport with this level of autonomy
@@ -313,7 +313,7 @@ This module introduces the language and structure of the problem definition, def
 
 Any task can be broken down into two components : 
   - understand the environment
-   - *[OWN] Analyze ego motion and environment (perception).*
+    - *[OWN] Analyze ego motion and environment (perception).*
   - make a driving decision
 
 <img src="./resources/w1/img/l2-req-perception0.png" width="600" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
@@ -347,9 +347,9 @@ To build a self-driving car, we neeed to be able to perform OEDR
     - vehicles : 
       - 4 wheelers (cars, bus, trucks)
       - 2 wheelers (motorbikes, bicycles...)
-       - *[OWN] Harder to predict since they have more freedom to move.*
+        - *[OWN] Harder to predict since they have more freedom to move.*
     - Pedestrians
-     - *[OWN] Even harder to predict.*
+      - *[OWN] Even harder to predict.*
   - Ego localization : where we are and how we're moving at any point in time
     - Position
     - Velocity, acceleration
@@ -362,11 +362,11 @@ To build a self-driving car, we neeed to be able to perform OEDR
       - more **training data** is one of key of improvements, but it's very challenging to label all the datas
   - Sensor uncertainty
     - visibility, noisy data, **GPS** & **LiDAR** measurement corrupted.
-    - *[OWN] Every subsystem that relies on these sensors must take uncertain measurements into account. This is why it is absolutely crucial to design subsystems that can accommodate sensor uncertainty and corrupted measurements in every perception task.*
+     - *[OWN] Every subsystem that relies on these sensors must take uncertain measurements into account. This is why it is absolutely crucial to design subsystems that can accommodate sensor uncertainty and corrupted measurements in every perception task.*
   - Occlusion, reflection on cameras and LiDAR data.
-   - *[OWN] Can confuse perception methods with ambiguous information that is challenging to resolve into accurate estimates of object locations.*
+    - *[OWN] Can confuse perception methods with ambiguous information that is challenging to resolve into accurate estimates of object locations.*
   - Illumination, lens flare, GPS outages & tunnels, which may make some data unusable.
-   - *[OWN] As such, perception methods require multiple redundant sources of information.*
+    - *[OWN] As such, perception methods require multiple redundant sources of information.*
   - Weather, precipitation (can adversely affect the quality of input data), as such, it is crucial to have some sensors that are immune to weather effects, e.g. radar.
 
 
@@ -380,7 +380,7 @@ To build a self-driving car, we neeed to be able to perform OEDR
 - Making `decisions` : 
   - `Long term` : 
     - question  : How to navigate from New York to Los Angeles ? 
-    - answer : we have a mission plan => A high level plan for the entire driving task.
+    - answer : we have a **mission plan** => A high level plan for the entire driving task.
       - Mapping the application used today : **type of road to take, lane** to be in so on
   - `Short term` 
     - Question : Is it safe to change lane now? or when should I execute a left turn at an intersection ?  
@@ -399,29 +399,41 @@ To build a self-driving car, we neeed to be able to perform OEDR
       - efficiently
       - following all listed traffic rules
       - Only follow those rules everyone else is following ...  
-    - **Driving Decision making is complicated** 
-- **Rule Based Planning or reactive planning** (from software prespective)
-  - One method to address the challenge of multilevel decision-making is **reactive planning**
-    - It takes into account `the current state` of ego and other objects and give decisions
+    - **Driving Decision making is complicated**
+    - *[OWN]: You would have to factor in OEDR as well (there are vehicles around you who may also want to turn left). Similarly, what if there is no stop line marked; you would have to determine the implied stop line, and stop there. There can be a vehicle standing right in the middle of the intersection for some reason. Countless situations may occur while executing a simple left turn.*
+   
+*[OWN] One way to address this challenge of multi-level decision-making problem from the software perspective, is called **Reactive Planning**.*
+- **Rule Based Planning or reactive planning**
+  - This involves decision trees.
+  - It takes into account `the current state` of ego and other objects and give decisions
     - Examples : 
       - If there is a pedestrian on the road, stop!
       - If speed limit changes, adjust speed to match it.
+  - *[OWN] You are only considering the current state, and not the future predictions.*
 
 What other types of planning are there ? 
 - **Predictive planning** : 
-  - we make predictions on how other **agents** in the **environment** (other vehicle and pedestrians), then use these predictions to inform our decisions
+  - we make predictions on how other **agents** in the **environment** (other vehicle and pedestrians) will move, and then use these predictions to inform our decisions.
   - Example: 
     - That car has been stopped for the last 10 seconds. It is going to be stopped for the next few seconds
     - Pedestrian is jaywalking. She will enter our lane by the time we reach her.
   - More natural way to think and closed to how humans operate vehicles
   - Predicts where other objects will be in the `future` before we make our decisions
     - depends on the accurate predictions of the actions of the other actors in the environment (more complexity layer for preception tasks)
-    - more used in self-driving cars in nowadays
-#### Lesson 3 Supplementary Reading: Driving Decisions and Actions
+  - More used in self-driving cars in nowadays
+ 
+*[OWN] This was the end of Week 1. In this module we discussed:*
+*- Basic autonomous driving terminology.*
+*- Taxonomy to characterize self-driving capabilities (levels of autonomy).*
+*- Driving task and major components of driving: perception, planning and execution.*
+*- Perception*
+*- Planning*
 
+#### Lesson 3 Supplementary Reading: Driving Decisions and Actions
 - [Motion planning and other high-level behaviour](https://ieeexplore.ieee.org/abstract/document/7490340)
 - [Mixed planning systems- winner of the DARPA Urban Challenge](https://onlinelibrary.wiley.com/doi/abs/10.1002/rob.20255)
-### Learn from Industry Expert 
+
+### Learn from Industry Expert *([OWN] What's this?)*
 
 #### Advice for Breaking into the Self-Driving Cars Industry
 -  Engineering Degree
