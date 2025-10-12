@@ -286,11 +286,13 @@ This module introduces the language and structure of the problem definition, def
     - Includes automated objects and event detection and response
     - In case of failure the control must be taken by the driver
     - the driver does not need to pay attention in specific situation as the vehicule shall alert the driver in time to intervene
+     - *[OWN] In general, the driver does need to pay attention.*
     - sometimes the sytems doesnot know when it is experiencing a failure
     - ex1 : Audi A8 Luxuary Sedan
   
   - **Level 4 - high Driving Automation** : L3 + Fallback - handles emergencies autonomously, driver can entirely focus on other tasks.
     - may ask to take over to avoid pulling over to the side of the road unnecessarily
+     - *[OWN] But the car handle emergencies without the user's input.*
     - the driver can watch a movie, check his phone
     - still permits self-driving systems with a limited ODD
     - ex1 : Only [Waymo](https://waymo.com/) has depoyed vehicles for public transport with this level of autonomy
@@ -310,7 +312,8 @@ This module introduces the language and structure of the problem definition, def
 #### **Lesson 2**: Requirements for Perception
 
 Any task can be broken down into two components : 
-  - understand the environment 
+  - understand the environment
+   - *[OWN] Analyze ego motion and environment (perception).*
   - make a driving decision
 
 <img src="./resources/w1/img/l2-req-perception0.png" width="600" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
@@ -344,7 +347,9 @@ To build a self-driving car, we neeed to be able to perform OEDR
     - vehicles : 
       - 4 wheelers (cars, bus, trucks)
       - 2 wheelers (motorbikes, bicycles...)
+       - *[OWN] Harder to predict since they have more freedom to move.*
     - Pedestrians
+     - *[OWN] Even harder to predict.*
   - Ego localization : where we are and how we're moving at any point in time
     - Position
     - Velocity, acceleration
@@ -356,10 +361,13 @@ To build a self-driving car, we neeed to be able to perform OEDR
     - through modern ML methods, but the reliability and performance shall be improve to achieve human level capability
       - more **training data** is one of key of improvements, but it's very challenging to label all the datas
   - Sensor uncertainty
-    - visibility, **GPS**, **LiDAR** measurement corrupted
-  - Occlusion, reflection on cameras 
-  - Illumination, lens flare
-  - Weather, precipitation (can correlate input data)
+    - visibility, noisy data, **GPS** & **LiDAR** measurement corrupted.
+    - *[OWN] Every subsystem that relies on these sensors must take uncertain measurements into account. This is why it is absolutely crucial to design subsystems that can accommodate sensor uncertainty and corrupted measurements in every perception task.*
+  - Occlusion, reflection on cameras and LiDAR data.
+   - *[OWN] Can confuse perception methods with ambiguous information that is challenging to resolve into accurate estimates of object locations.*
+  - Illumination, lens flare, GPS outages & tunnels, which may make some data unusable.
+   - *[OWN] As such, perception methods require multiple redundant sources of information.*
+  - Weather, precipitation (can adversely affect the quality of input data), as such, it is crucial to have some sensors that are immune to weather effects, e.g. radar.
 
 
 #### Lesson 2 Supplementary Reading: Requirements for Perception
