@@ -410,6 +410,7 @@ To build a self-driving car, we neeed to be able to perform OEDR
       - If there is a pedestrian on the road, stop!
       - If speed limit changes, adjust speed to match it.
   - *[OWN] You are only considering the current state, and not the future predictions.*
+  - *[OWN] Also, rule based and reactive planning don't seem to be the same thing based on the final quiz that I attempted.*
 
 What other types of planning are there ? 
 - **Predictive planning** : 
