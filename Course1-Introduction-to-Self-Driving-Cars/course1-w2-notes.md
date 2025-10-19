@@ -12,6 +12,10 @@
 ## Autonomous Vehicle Hardware, Software and Environment Representation
 
 ### Lesson 1: Sensors and Computing Hardware
+*[OWN] In this lesson, we will see:*
+- *sensor types and characteristics,*
+- *self-driving computing hardware available today*
+
 **Sensors** : device that measures or detects a property of the environment, or changes to a/another property overtime.
 
 <img src="./resources/w2/self-driving-cars-sensors.png" width="600" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
@@ -38,14 +42,14 @@ Sensors for perception :
     - Cameras types :
       - Exteroceptive STEREO Camera: the combination of two cameras with overlapping FOVs and aligned image planes.
       - enables depth estimation from image data (synchronized image pairs)
-      - Pixel values from image can be matched to the other image producing a disparity map of the scene then be used to estimate depth at each pixel
+      - Pixel values from image can be matched to the other image producing a **disparity map** of the scene then be used to estimate depth at each pixel
   - **LiDAR (Light Detection And Ranging)** : involves shooting light beams into the environment and measuring the reflet return
-    - by measuring the amount of returned light and time of flight (TOF) of the beam based on intensity and range to the reflecting object can be estimated
+    - By measuring the amount of returned light and time of flight of the beam. Both an intensity and range to the reflecting object can be estimated.
     - LIDAR : includes a spinning element with multiple stacked light sources and outputs a detailed 3D scene geometry from LIDAR point cloud
-    - Active sensor w/ it's own light sources therefore not affected by the environments lighting
-    - different behavior than camera when operating in poor or variable lighting conditions
+    - Active sensor w/ it's own light sources therefore not affected by the environments lighting.
+    - So LIDAR do not face the same challenges as cameras when operating in poor or variable lighting conditions. 
     - Comparison metrics:
-      - **Number of beams** (of sources) : most common sizes 8, 26, 32, 64 
+      - **Number of beams** (of sources) : most common sizes 8, 16, 32, 64 
       - **Points per second** : the faster the point collection, the more detailed the 3D point cloud can be.
       - **Rotation Rate** : The higher this rate, the faster the 3D point clouds are updated 
       - **Detection Range** : dictated by the power output of the light source
@@ -54,14 +58,14 @@ Sensors for perception :
       - High-Resolution Solid-state LIDAR : without a rotational component from typical LIDAR
         - Extremely low-cost and reliable
   - **RADAR (Radio Detection And Ranging)** : old than Lidars and robustly detects **large** objects in the environment
-    - They are particularly useful in adverse weather(fog and rain) as they are mostly unaffected by precipitation (poor visibility)
+    - They are particularly useful in adverse weather (fog and rain) as they are mostly unaffected by precipitation (poor visibility)
     - Comparison metrics:
       - **Detection Range** 
       - **FOV** 
-      - **Position and speed accuracy**
+      - **Position and speed measurement accuracy**
     - Configurations : 
-      - Short range : Wide FOV 
-      - Long range : Narrow FOV 
+      - Short range : Wide FOV (WFOV)
+      - Long range : Narrow FOV (NFOV)
   - **ULTRASONIC/SONARS(Sound Navigation and Ranging)** : measures range using sound waves
     - Short-range all weather distance measurement  
     - applications : 
@@ -73,21 +77,23 @@ Sensors for perception :
       - Cost
   
 - `Proprioceptive` : 
-  - **GNSS (Global Navigation Satellite Systems)** : 
+  - **GNSS (Global Navigation Satellite Systems)** (examples include): 
     - GPS (Global Positioning System) with variable Range  : 5 to 10m
     - Galileo : more accurated than GPS
-    - GNSS receivers are used to measure ego vehicle position, velocity and heading
-      - varying accuracies: RTK, PPP, DGPS
-      - the accuracy depends a lot on the actual positioning methods and the corrections used
+    - GNSS receivers are used to measure:
+      - ego vehicle position,
+      - velocity and
+      - (sometimes) heading
+    - the accuracy depends a lot on the actual positioning methods and the corrections used: RTK, PPP, DGPS
   
   - **IMU (Inertial Measurement Units)** :   
     - angular rotation rate
     - acceleration 
-    - heading (IMU, GPS) : the most important of vehicle control
     - combined measurements can be used to estimate the 3D orientation of the vehicle
-  
+      - heading (determined from combined information from IMU, GPS) : the most important of vehicle control
+    
   - **WHEEL ODOMETRY** : 
-    - Tracks wheel velocities and orientation
+    - Tracks wheel rates of rotation and orientation
     - Uses these to calculate overall speed and orientation of car
       - Speed accuracy
       - position drift (heading rate)
@@ -96,17 +102,22 @@ Sensors for perception :
 **Computing Hardware** : the most crucial part is the **computing brain** and the main decision making unit of the car
 - Takes in all sensor data
 - computes actions
-- Already existing advanced systems that do self driving car processing
+- Companies tend to go for custom hardware, but already existing advanced systems that do self driving car processing exist
   - Eg : NVIDIA Drive Px/AGX, Intel & Mobileye EyeQ
 - computer brain needs both serial and parallel compute modules 
   - Image LiDAR processing: to do segmentation, Object detection, Mapping
     - GPUs : Graphic Processing Unit 
     - FPGAs : Field Programmable Gate Array
     - ASICs: Application Specific Integrated Chip
-- HW synchronization : 
+- Hardware synchronization : 
   - To synchronize different modules and provide **common clock**
   - sensor measurements must be timestamped with consitent times for `Sensor Fusion` to function correctly
   - GPS relies on extremely accurate timing and act as an appropriate reference clock when available
+
+*[OWN]*
+***Summary:*** 
+  - *Sensors (proprioceptive and exteroceptive - camera, LIDAR, RADAR, SONAR/ultrasonics, GNSS, IMU, wheel odometry) and,*
+  - *self-driving computing hardware.*
 
 ### Lesson 1 Supplementary Reading: Sensors and Computing Hardware
 
