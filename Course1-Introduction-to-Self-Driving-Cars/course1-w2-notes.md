@@ -393,7 +393,8 @@ Environment Map Types :
 
 - Collects continuous sets if LIDAR
 - The different btw LIDAR maps is used to calculate the movement of the autonomous vehicle
-- The movement of the vehicle is based on the evolution of the LIDAR points
+  - *[OWN] I think this is implying ICP; as new LIDAR or camera data is received it is compared to the localization map and a measurement of the ego vehicles position is created by aligning the new data with the existing map. This measurement is then combined with other sensors to estimate ego motion and ultimately used to control the vehicle.*
+- The movement of the vehicle is based on the evolution of the LIDAR points.
   
 #### **Occupancy grid map**
 
@@ -404,12 +405,12 @@ The gray rectangle is the grip map
 - Discretized fine grain grid map
   - Can be 2D or 3D
 - uses LIDAR points
-- Occupancy by static object
+- Occupancy by a static object
   - Tree, buildings, curbs and so on
 - Curbs and other non drivable surfaces
   - Dynamic objects are removed (by removing all lidar points that are found within the bounding boxes od DOD in the **perception** module)
-
-- each grid cell is represented by a probability value (100%: occupied or 0% : free)
+  - Additionally, static objects which will not interfere with the vehicle are also removed. Such as the drivable surface or any over hanging tree branches.
+- Since the filtering process described above isn't perfect, each grid cell is represented by a probability value (100%: occupied or 0% : free)
   
 <img src="./resources/w2/grid-map.png" width="400" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
 
@@ -417,10 +418,8 @@ The gray rectangle is the grip map
 
 <img src="./resources/w2/grid-map-covered-occupied-free.png" width="400" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
 
-- the filtering process is not perfect 
-
 #### **Detailed Roadmap**
-
+*[OWN] I think this is a vector map (of lanelets). Contains information about the lanes on the road and traffic and other regulatory elements in the environment.*
 - Used to plan a safe and efficient path to be taken by the self-driving car
 
 <img src="./resources/w2/detailed-map.png" width="400" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
@@ -429,15 +428,17 @@ The gray rectangle is the grip map
   - `Fully Online`
     - uses statics objects of the perception stack to accuretely label and localize all relevant static objects to create the map such as : lane boundaries, traffic regulation(signs and lights), regulations attributes on the lanes (right turns marking or crosswalks)
     - rarely used due the complexity
+
   - `Fully Offline`
     - created from collectiong data of given road several times
     - specialized vehicles with high accuracy sensors are driven along roadways regularly to construct offline maps
     - after the collection is complete the information is then labelled with the use of automatic labelling from static object perception and human annotation and correction
+    - such a map is very detailed and accurate, but is unable to react or adapt to a changing environment.
 
   - `Created Offline and Update Online`
     - Created Offline and Update Online with new relevant information
     - creating a highly accurate roadmap which can be updated while driving 
-    - better than offline and online methods 
+    - combines the benefit of both offline and online approaches. 
 
 ### Lesson 4 Supplementary Reading: Environment Representation
 
