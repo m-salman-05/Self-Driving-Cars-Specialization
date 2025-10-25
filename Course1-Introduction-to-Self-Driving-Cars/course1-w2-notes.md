@@ -256,42 +256,43 @@ Software stack for self-driving cars :
     -  accurate vehicle position
   - for greater/better accuracy a Lidar and camera data can be incorporated
 
+- Classifying and locating the important elements of the environment: This is divided into two segments:
   - Dynamic Object Detection (DOD)
     - inputs: 
       - GPS/IMU/Odometry
       - Lidar
       - cameras
     - outputs :
-      - 3D Bounding Boxes : encode the class or type of object, orientation, and size of the object
-  - Dynamic Object Tracking (DOT) : once detected, objects need be tracked overtime 
-    - inputs : Bounding Boxes
-    - outputs : Object tracks (position and history path in the environment)
-  - Object Motion Prediction (OMP) : 
-    - inputs : Objects tracks
-    - outputs: Dynamic Objects
-    - ML/DL predictive model
+      - 3D Bounding Boxes : encode the class or type of object, position, orientation, and size of the object
+    - Once dynamic objects are detected, they are tracked using Dynamic Object Tracking (DOT). 
+      - inputs : Bounding Boxes
+      - outputs : Object is tracked (position and history path in the environment)
+    - The history of the path is used along with the roadmaps to predict the future path of all dynamic objects, Object Motion Prediction (OMP).
+      - inputs : Objects tracks (from DOT), current environment (roadmap)
+      - outputs: Predicted path of the identified dynamic objects.
+      - ML/DL predictive model (???)
   - Static Object Detection (SOD) : 
     - inputs: HD Road Map (LIDAR + Cameras)
-    - Outputs : Static objects in the environment(current lane, location of regulatory : sign and traffic lights)
+    - Outputs : Static objects in the environment (current lane, location of regulatory elements like signs and traffic lights)
 
 
-**Environment Mapping** : creates several different types of representation of the current environment around the autonomous car.
+**Environment Mapping** : creates several different types of representation of the current environment around the autonomous car. There are three types of maps that we briefly discuss:
 
-Occupancy Grid Map : 
+Occupancy Grid Map : map of all static objects in the environment surrounding the vehicle. 
 - inputs: 
   - objects tracks
   - LIDAR data (used to construct the occupancy grid map)
-    - after a filtering are applied in the input data to make it usable by the output
+    - after a filtering are applied in the input data to make it usable by the occupancy grid, e.g. drivable surface points and dynamic object points are removed.
 - outputs : 
-  - Occupancy Grid Map : sets of cells of probability representing occupancy state (references : postural monitoring project)
+  - Occupancy Grid Map : set of cells, with each cell having a probability representing occupancy state (references : postural monitoring project)
 
-Localization Map : used by the localization module in order to improve ego* state estimation
+Localization Map : used by the localization module in order to improve ego* state estimation. Sensors data are compared to the localization map while driving to determine the motion of car relative to the localiztion map. This motion is combined with other proprioceptive sensor information to accurately localize the ego vehicle.
 - inputs: 
-  - LIDAR, camera data
+  - LIDAR, camera data is used to create this map.
 - outputs : 
   - Localization Map
-- sensors data are compared to the output while driving to determine the motion of car relative to the localiztion map
-Detailed Road Map : provides the road segments representing the driving env
+
+Detailed Road Map : provides the map of road segments representing the driving env. It captures signs and lane markings so that this map can be used by the motion planning module. It is created from prerecorded data and as well as incoming information from the current static environment gathered by the perception stack.
 - inputs: 
   - Prior Road Map
   - Vehicle position
@@ -299,45 +300,41 @@ Detailed Road Map : provides the road segments representing the driving env
   - Static objects
 - outputs :
   - Detailed Road Map  
-This modules interacts constantly with the perception module to improve the performance of both modules
-- eg : the perception provides the static env need to update the detailed road map => prediction module => accurate dynamic object predictions
+- This modules interacts constantly with the perception module to improve the performance of both modules
+  - eg : the perception provides the static env need to update the detailed road map => prediction module => accurate dynamic object predictions
 
 **Motion Planning** : challenging task and hard to solve in a single integrate processs. Needs to be decomposed into several layers of abstraction
 
--  Mission Planner (Top level) : defines a mission over entire horizon of the driving task
+- Mission Planner (Top level) : performs long-term planning and defines a mission over entire horizon of the driving task
    - inputs: 
      - Current Goal
      - Detailed Road Map
      - Vehicle Position
    - outputs(graphs) : sequences of road segments that connect the origin <=> destination and passes to the next layer (Behavior Planner)
      - complete mission
-  
 
 - Behavior Planner : solves shorts term planning problems
-  - stabilishes a set of safe actions/maneuvers to be executed while travelling along the mission path
+  - estabilishes a set of safe actions/maneuvers to be executed while travelling along the mission path
     - Eg : whether the vehicle Shall merge into an adjacent lane given the desired speed and predicted behaviors of nealy vehicles
   - inputs: 
     - Detailed Road Map
     - Missin Path
     - Dynamics objects
-    - Occupancy Grid    
-
+    - Occupancy Grid
   - outputs : 
     - Maneuver decision
     - behaviors Contraints 
   
-Local Planner : defines a specific path and velocity profile to drive
+- Local Planner : performs immediate or reactive planning, and is responsible for defining a specific path and velocity profile to drive.
   - inputs:
     - Occupancy Grid    
     - behaviors Contraints 
     - Vehicle operating limits
     - Dynamic objects in the env
   - outputs : 
-    - Planned trajectory
-
+    - Planned trajectory which is a combined desired path and velocity profile for a short period of time into the future. 
 
 **Controller**: takes a trajectory plan turns it into a set of precise actuation commands for vehicle to apply 
-
 - Velocity Controller (Longitudinal) : 
   - inputs : 
     - planned trajectory 
@@ -357,17 +354,19 @@ Local Planner : defines a specific path and velocity profile to drive
 **System Supervisor**: continuously moritoring of all aspect of the ego-vehicle gives the appropriate warning in the event of the subsystem failure 
 
 - HW supervisor : 
-  - monitors all hw components to check for any fault : sensors failure, missing measurements.
-  - analyse hw output : camera or lidar failure 
+  - monitors all hw components to check for any fault : sensors failure, missing measurements, degraded information.
+  - analyse hw output for any outputs which do not match the domain which the self-driving car was programmed to perform under.
+    - For example, if one of the camera sensors is blocked by a paper bag or if snow is falling and corrupting the LIDAR point cloud data.
 
 - SW supervisor : 
-  - responsible for SW stack validation 
-  - output inconsistency results of all modules
+  - responsible for SW stack validation; all pipelines (env perception, mapping, planning, controller) are running at the right frequencies and providing complete outputs.
+  - analyzes output inconsistency results of all modules
 
 
 ### Lesson 3 Supplementary Reading: Software Architecture
 
 - [Software architecture from the Team VictorTango - DARPA Urban Challenge Technical Paper](https://www.romela.org/wp-content/uploads/2015/05/Odin-Team-VictorTango%e2%80%99s-Entry-in-the-DARPA-Urban-Challenge.pdf)
+- [OWN: another link for the same resource] (https://www.semanticscholar.org/paper/DARPA-Urban-Challenge-Technical-Paper-Reinholtz-Alberi/c10acd8c64790f7d040ea6f01d7b26b1d9a442db?p2df)
 
 ### Lesson 4: Environment Representation
 
