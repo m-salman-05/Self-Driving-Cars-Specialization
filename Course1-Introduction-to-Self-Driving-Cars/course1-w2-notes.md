@@ -209,31 +209,31 @@ Sensor coverage requirement for different scenarios :
 
   4. Overtaking *(a parked car)*
     - Longitudinal converage : 
-      - If overtaking a parked or moving the vehicle (wide short-range), need to detect oncoming traffic (narrow long-range) beyond point of return to own lane
+      - need to sense the parked car as well as look for oncoming traffic.
+      - So, we need both sensors, wide short-range sensors to detect the parked car and narrow long-range sensors to identify if oncoming traffic is approaching.
     - Lateral coverage : 
-      - Always need to observe adjacent lanes
-        - Need to observe additianl lanes if other vehicles can move into adjacent lanes
-
+      - Always need to observe beyond just the adjacent lanes to check for other merging vehicles.
 
   5. Turning, crossing at intersections
      - Intersections : 
-       - Observe behoyond intersection for approaching vehicles, pedestrian crossings, clear exit lanes
+       - Observe behoyond intersection for approaching vehicles, pedestrian crossings, clear exit lanes.
        - Requires near omnidirectional sensing for arbitrary intersection angles
 
   6. Passing roundabouts(rondpoints)
     - Longitudinal coverage :
       -  Due to the shape of the roundabout, need a wider FOV
     - Lateral coverage : 
-      - Vehicles are slower than usual, limited range requirement 
+      - Vehicles are slower than usual, limited range requirement, but wider FOV.
 
 - Overall Coverage urban
   
 <img src="resources/w2/overallcoverage-sensors-urban.png" width="540" style="border:0px solid #FFFFFF; padding:1px; margin:1px">
 
-Cost and blind spots : 
 The final choice of configuration also depends on : 
-- requiremnt of operating conditions
+- requiremnt of operating conditions and the driving scenarios we might be in and the maneuvers we may want to take
+- should contain both longitudinal and lateral coverage
 - sensor redundacy due to failure and budgets
+- budget
 
 ### Lesson 2 Supplementary Reading: Hardware Configuration Design
 
