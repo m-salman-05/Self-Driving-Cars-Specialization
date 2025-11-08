@@ -248,6 +248,9 @@ Read more about **2D plan motion and coordinate frames** in the PDF below:
  
 [Chapter 2 - "Models of Mobile Robots in the Plane" B.A. Francis and M. Maggiore, Flocking and Rendezvous in Distributed Robotics, SpringerBriefs in Control, Automation and Robotics (2016)](https://edisciplinas.usp.br/pluginfile.php/5679996/mod_resource/content/5/Models-of-Mobile-Robots-in-the-Plane.pdf)
 
+[OWN] https://www.coursera.org/api/rest/v1/asset/download/pdf/csKJTCDXEemj-RKX93anOA?pageStart=&pageEnd=
+[OWN] https://www.springer.com/cda/content/document/cda_downloaddocument/9783319247274-c2.pdf?SGWID=0-0-45-1532785-p177708750
+
 
 ### Lesson 2: The Kinematic Bicycle Model
 
